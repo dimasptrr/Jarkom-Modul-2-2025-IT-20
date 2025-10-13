@@ -24,12 +24,17 @@ tokoh sesuai glosarium yang sudah diberikan.
 
 
 
+
+
 ## Soal 2
 Angin dari luar mulai berhembus ketika Eonwe membuka jalan ke awan NAT. Pastikan 
 jalur WAN di router aktif dan NAT meneruskan trafik keluar bagi seluruh alamat internal 
 sehingga host di dalam dapat mencapai layanan di luar menggunakan IP address.
 
-
+```
+up apt update && apt install -y iptables
+up iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.221.0.0/16
+```
 
 
 
@@ -58,8 +63,11 @@ notify dan allow-transfer ke Valmar, set forwarders ke 192.168.122.1. Di Valmar
 ns2.<xxxx>.com → 192.168.122.1. Verifikasi query ke apex dan hostname layanan 
 dalam zona dijawab melalui ns1/ns2. 
 
-
-
+- step pertama
+```
+apt update
+apt install bind9 -y
+```
 
 
 
