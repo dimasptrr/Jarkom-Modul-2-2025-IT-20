@@ -143,3 +143,50 @@ sehingga /about berfungsi tanpa akhiran .php. Akses harus dilakukan melalui host
 
 
 
+
+
+## Soal 11
+Di muara sungai, Sirion berdiri sebagai reverse proxy. Terapkan path-based routing: 
+/static → Lindon dan /app → Vingilot, sambil meneruskan header Host dan X-Real-IP 
+ke backend. Pastikan Sirion menerima www.<xxxx>.com (kanonik) dan 
+sirion.<xxxx>.com, dan bahwa konten pada /static dan /app di-serve melalui backend 
+yang tepat. 
+
+
+
+
+
+
+
+## Soal 12
+Ada kamar kecil di balik gerbang yakni /admin. Lindungi path tersebut di Sirion 
+menggunakan Basic Auth, akses tanpa kredensial harus ditolak dan akses dengan 
+kredensial yang benar harus diizinkan. 
+
+
+
+
+
+
+
+## Soal 13
+ “Panggil aku dengan nama,” ujar Sirion kepada mereka yang datang hanya menyebut 
+angka. Kanonisasikan endpoint, akses melalui IP address Sirion maupun 
+sirion.<xxxx>.com harus redirect 301 ke www.<xxxx>.com sebagai hostname 
+kanonik. 
+
+
+
+
+
+
+
+
+## Soal 14
+Di Vingilot, catatan kedatangan harus jujur. Pastikan access log aplikasi di Vingilot 
+mencatat IP address klien asli saat lalu lintas melewati Sirion (bukan IP Sirion). 
+
+
+
+
+
