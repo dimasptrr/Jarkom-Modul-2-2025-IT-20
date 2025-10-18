@@ -395,15 +395,17 @@ ps aux | grep named
 dig SOA K20.com @192.221.3.4
 ```
 ```
--       -> Hasilnya harus menunjukkan nomor seri yang baru (misal: 5).
+       -> Hasilnya harus menunjukkan nomor seri yang baru (misal: 5).
+```
+```
 ```
 -    c. Dari terminal klien, cek record baru di Valmar:
 ```
 dig tes-transfer.K20.com @192.221.3.4
 ```
 -       -> Hasilnya harus menunjukkan A record dengan IP 1.2.3.4.
-
-
+```
+```
 
 ## Soal 7
 Peta kota dan pelabuhan dilukis. Sirion sebagai gerbang, Lindon sebagai web statis, 
