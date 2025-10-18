@@ -160,7 +160,7 @@ apt update
 apt install bind9 -y
 ```
 
-# Di terminal Tirion
+Di terminal Tirion
 ```
 nano /etc/bind/named.conf.options
 
@@ -185,7 +185,7 @@ options {
     listen-on-v6 { any; };
 };
 ```
-# Di terminal Tirion
+Di terminal Tirion
 ```
 nano /etc/bind/named.conf.local
 
@@ -197,7 +197,7 @@ zone "K20.com" {
 };
 ```
 
-# Di terminal Tirion
+Di terminal Tirion
 ```
 mkdir -p /etc/bind/zones
 nano /etc/bind/zones/db.K20.com
@@ -220,7 +220,7 @@ ns2     IN      A       192.221.3.4      ; ns2.K20.com menunjuk ke IP Valmar
 @       IN      A       192.221.3.2      ; K20.com (apex) menunjuk ke IP Sirion
 ```
 
-# Di terminal Tirion
+Di terminal Tirion
 named-checkconf
 named-checkzone K20.com /etc/bind/zones/db.K20.com
 
@@ -264,7 +264,7 @@ zone "K20.com" {
 };
 ```
 ```
-# Di terminal Valmar
+Di terminal Valmar
 ```
 named-checkconf
 ln -s /etc/init.d/named /etc/init.d/bind9
@@ -275,7 +275,7 @@ up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
        echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
        echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
-#untuk mengecek
+Untuk mengecek
 ```
 ping K20.com
 ```
