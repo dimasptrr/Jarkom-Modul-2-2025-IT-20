@@ -420,11 +420,44 @@ Lindon),
 dan 
 Verifikasi dari dua klien berbeda bahwa seluruh hostname tersebut ter-resolve ke tujuan 
 yang benar dan konsisten. 
+```
+nano /etc/bind/zones/db.K20.com
+```
+Rubah dengan
+```
+@       IN      SOA     ns1.K20.com. root.K20.com. (
+                              6         ; Serial (WAJIB UBAH NOMOR INI!)
+                         604800         ; Refresh
+...
+```
+Tambahkan ini
+```
+; CNAME Records (Alias untuk layanan)
+www       IN      CNAME   sirion.K20.com.
+static    IN      CNAME   lindon.K20.com.
+app       IN      CNAME   vingilot.K20.com.
+```
 
+ Di Terminal Tirion
+ ```
+named-checkconf
+named-checkzone K20.com /etc/bind/zones/db.K20.com
 
+service bind9 restart
+```
+Di Earendil
+```
+dig www.K20.com
+dig static.K20.com
+dig app.K20.com
+```
 
-
-
+Di Cirdan
+```
+dig www.K20.com
+dig static.K20.com
+dig app.K20.com
+```
 
 
 
@@ -435,16 +468,178 @@ tersebut sebagai slave, isi PTR untuk ketiga hostname itu agar pencarian balik I
 address mengembalikan hostname yang benar, lalu pastikan query reverse untuk 
 alamat Sirion, Lindon, Vingilot dijawab authoritative.
 
+Di Terminal TIRION
+```
+nano /etc/bind/named.conf.local
+```
+Tambahkan konfigurasi zona berikut di akhir file named.conf.local
+```
+// Zona Reverse DNS untuk segmen DMZ (Soal 8)
+zone "3.221.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.192.221.3"; // Nama file untuk data reverse zone
+    allow-transfer { 192.221.3.4; };      // Izinkan Valmar untuk menyalin
+    notify yes;
+};
+```
+Di terminal TIRION
+```
+nano /etc/bind/zones/db.192.221.3
+```
+Tambahkan konfigurasi berikut di dalam file db.192.221.3
+```
+;
+; BIND reverse data file for 192.221.3.0/24
+;
+$TTL    604800
+@       IN      SOA     ns1.K20.com. root.K20.com. (
+                              1         ; Serial (Mulai dari 1 untuk zona baru)
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+; Name Servers
+@       IN      NS      ns1.K20.com.
+@       IN      NS      ns2.K20.com.
+
+; PTR Records (IP -> Hostname)
+2       IN      PTR     sirion.K20.com.   ; 192.221.3.2
+5       IN      PTR     lindon.K20.com.   ; 192.221.3.5
+6       IN      PTR     vingilot.K20.com. ; 192.221.3.6
+```
+Di Terminal TIRION
+```
+named-checkconf
+named-checkzone 3.221.192.in-addr.arpa /etc/bind/zones/db.192.221.3
+
+service bind9 restart
+```
+Di Terminal VALMAR
+```
+nano /etc/bind/named.conf.local
+```
+Tambahkan konfigurasi zona berikut di akhir file named.conf.local
+```
+zone "3.221.192.in-addr.arpa" {
+    type slave;
+    file "slaves/db.192.221.3";
+    masters { 192.221.3.3; };
+};
+```
+Di Terminal VALMAR
+```
+named-checkconf
+service bind9 restart
+```
+Verifikasi lookup reverse untu sirion
+```
+dig -x 192.221.3.2
+```
+Hasil Yang diharapkan
+```
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: ...
+;; flags: qr aa rd ra; ...  <-- Perhatikan flag 'aa' (Authoritative)
+
+;; QUESTION SECTION:
+;2.3.221.192.in-addr.arpa.      IN      PTR
+
+;; ANSWER SECTION:
+2.3.221.192.in-addr.arpa. 604800 IN     PTR     sirion.K20.com. 
 
 
+#verifikasi lookup reverse untu lindon
+dig -x 192.221.3.5
 
-
+#verifikasi lookup reverse untu vingilot
+dig -x 192.221.3.6
+```
 
 
 ## Soal 9
 Lampion Lindon dinyalakan. Jalankan web statis pada hostname static.<xxxx>.com 
 dan buka folder arsip /annals/ dengan autoindex (directory listing) sehingga isinya 
 dapat ditelusuri. Akses harus dilakukan melalui hostname, bukan IP. 
+```
+apt update && apt-get install -y nginx
+```
+Di terminal LINDON
+- Buat direktori utama untuk situs
+```
+mkdir -p /var/www/static.K20.com
+```
+Buat halaman utama (index.html)
+```
+echo '<html><body><h1>Lampion Lindon Menyala!</h1><p>Ini adalah konten statis yang disajikan dari pelabuhan Lindon.</p><p>Kunjungi <a href="/annals/">arsip kami</a>.</p></body></html>' > /var/www/static.K20.com/index.html
+```
+Buat direktori arsip /annals/
+```
+mkdir -p /var/www/static.K20.com/annals
+```
+Buat beberapa file contoh di dalam /annals/ agar ada isinya
+```
+touch /var/www/static.K20.com/annals/catatan_perjalanan.txt
+touch /var/www/static.K20.com/annals/peta_beleriand.png
+touch /var/www/static.K20.com/annals/dokumen_rahasia.pdf
+```
+Di terminal LINDON
+```
+nano /etc/nginx/sites-available/static.K20.com
+```
+Konfigurasi Nginx untuk static.K20.com
+```
+server {
+    listen 80;
+    server_name static.K20.com;
+
+    # Tentukan direktori root tempat file website disimpan
+    root /var/www/static.K20.com;
+    index index.html;
+
+    # Konfigurasi standar untuk menangani request
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Konfigurasi khusus untuk folder /annals/
+    location /annals/ {
+        # AKTIFKAN AUTOINDEX (DIRECTORY LISTING) DI SINI
+        autoindex on;
+    }
+}
+```
+Di terminal LINDON
+- Buat symbolic link untuk mengaktifkan konfigurasi situs
+```
+ln -s /etc/nginx/sites-available/static.K20.com /etc/nginx/sites-enabled/
+```
+Hapus link konfigurasi default agar tidak terjadi konflik
+```
+rm /etc/nginx/sites-enabled/default
+```
+Periksa apakah konfigurasi Nginx bebas dari kesalahan sintaks
+```
+nginx -t
+```
+Restart layanan Nginx menggunakan perintah yang sesuai untuk sistem Anda
+```
+/etc/init.d/nginx restart
+```
+Pastikan proses Nginx sedang berjalan
+```
+ps aux | grep nginx
+```
+cek di client manapun(misal: Earendil)
+```
+curl http://static.K20.com
+```
+-  outputnya harusnya <html><body><h1>Lampion Lindon Menyala!</h1><p>Ini adalah konten statis yang disajikan dari pelabuhan Lindon.</p><p>Kunjungi <a href="/annals/">arsip kami</a>.</p></body></html>
+
+Dari terminal Earendil
+```
+curl http://static.K20.com/annals/
+```
+-  outputnya harusnya Index of /annals/
 
 
 
@@ -456,9 +651,94 @@ Vingilot mengisahkan cerita dinamis. Jalankan web dinamis (PHP-FPM) pada
 hostname app.<xxxx>.com dengan beranda dan halaman about, serta terapkan rewrite 
 sehingga /about berfungsi tanpa akhiran .php. Akses harus dilakukan melalui hostname. 
 
+Di terminal vingilot
+```
+apt update
+apt-get install -y nginx php8.4-fpm
 
+mkdir -p /var/www/app.K20.com
 
+echo '<html>
+<head><title>Selamat Datang di Vingilot</title></head>
+<body>
+    <h1>Vingilot Mengisahkan Cerita Dinamis</h1>
+    <?php
+        echo "<p>Halaman ini disajikan oleh PHP di server: " . $_SERVER["SERVER_NAME"] . "</p>";
+    ?>
+    <p><a href="/about">Tentang Kami</a></p>
+</body>
+</html>' > /var/www/app.K20.com/index.php
 
+echo '<html>
+<head><title>Tentang Vingilot</title></head>
+<body>
+    <h1>Tentang Aplikasi Dinamis Ini</h1>
+    <p>Ini adalah halaman "About" yang disajikan tanpa ekstensi .php di URL.</p>
+</body>
+</html>' > /var/www/app.K20.com/about.php
+```
+
+Berikan kepemilikan seluruh direktori web ke pengguna www-data
+```
+chown -R www-data:www-data /var/www/app.K20.com
+```
+Atur izin direktori ke 755 dan file ke 644
+```
+find /var/www/app.K20.com -type d -exec chmod 755 {} \;
+find /var/www/app.K20.com -type f -exec chmod 644 {} \;
+
+nano /etc/nginx/sites-available/app.K20.com
+```
+- Konfigurasi Nginx untuk app.K20.com
+- Konfigurasi Nginx untuk app.K20.com (PHP-FPM)
+```
+server {
+    listen 80;
+    server_name app.K20.com;
+
+    root /var/www/app.K20.com;
+    index index.php;
+
+    location / {
+        # Aturan rewrite yang memungkinkan /about berfungsi
+        try_files $uri $uri/ $uri.php =404;
+    }
+
+    # Teruskan semua file .php ke PHP-FPM untuk diproses
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        # Pastikan path socket ini benar untuk versi PHP 8.4
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
+    }
+}
+
+ln -s /etc/nginx/sites-available/app.K20.com /etc/nginx/sites-enabled/
+```
+Hapus link konfigurasi default
+```
+rm -f /etc/nginx/sites-enabled/default
+
+nginx -t
+
+/etc/init.d/nginx restart
+/etc/init.d/php8.4-fpm restart
+```
+Memastikan proses nginx dan php-fpm berjalan
+```
+ps aux | grep nginx
+ps aux | grep php-fpm
+
+ls -l /var/run/php/
+```
+Cek di client manapun(misal: Elrond)
+```
+curl http://app.K20.com
+```
+Outputnya harusnya <html>
+```
+curl http://app.K20.com/about
+```
+- Outputnya harusnya about.php
 
 
 
@@ -469,41 +749,79 @@ ke backend. Pastikan Sirion menerima www.<xxxx>.com (kanonik) dan
 sirion.<xxxx>.com, dan bahwa konten pada /static dan /app di-serve melalui backend 
 yang tepat. 
 
+```
+apt update && apt-get install -y nginx
+```
+Di terminal SIRION
+```
+nano /etc/nginx/sites-available/reverse-proxy.conf
+```
+Konfigurasi Nginx untuk Sirion sebagai Reverse Proxy
+```
+server {
+    listen 80;
 
+    # Sirion akan merespons kedua hostname ini
+    server_name www.K20.com sirion.K20.com;
 
+    # LOKASI 1: Path-based routing untuk konten statis
+    # Semua request yang dimulai dengan /static/ akan diteruskan ke Lindon
+    location /static/ {
+        # Alamat backend server Lindon
+        proxy_pass http://192.221.3.5/;
 
+        # Meneruskan header penting ke backend
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
 
-
-
-## Soal 12
-Ada kamar kecil di balik gerbang yakni /admin. Lindungi path tersebut di Sirion 
-menggunakan Basic Auth, akses tanpa kredensial harus ditolak dan akses dengan 
-kredensial yang benar harus diizinkan. 
-
-
-
-
-
-
-
-## Soal 13
- “Panggil aku dengan nama,” ujar Sirion kepada mereka yang datang hanya menyebut 
-angka. Kanonisasikan endpoint, akses melalui IP address Sirion maupun 
-sirion.<xxxx>.com harus redirect 301 ke www.<xxxx>.com sebagai hostname 
-kanonik. 
-
-
-
-
-
-
-
-
-## Soal 14
-Di Vingilot, catatan kedatangan harus jujur. Pastikan access log aplikasi di Vingilot 
-mencatat IP address klien asli saat lalu lintas melewati Sirion (bukan IP Sirion). 
-
-
-
-
+    # LOKASI 2: Path-based routing untuk konten dinamis
+    # Semua request yang dimulai dengan /app/ akan diteruskan ke Vingilot
+    location /app/ {
+        # Alamat backend server Vingilot
+        proxy_pass http://192.221.3.6/;
+        
+        # Meneruskan header penting ke backend
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+Di terminal SIRION
+- Buat symbolic link untuk mengaktifkan konfigurasi
+```
+ln -s /etc/nginx/sites-available/reverse-proxy.conf /etc/nginx/sites-enabled/
+```
+Hapus link konfigurasi default jika ada
+```
+rm -f /etc/nginx/sites-enabled/default
+```
+Periksa apakah konfigurasi Nginx bebas dari kesalahan sintaks
+```
+nginx -t
+```
+Restart layanan Nginx
+```
+/etc/init.d/nginx restart
+```
+Pastikan proses Nginx sedang berjalan
+```
+ps aux | grep nginx
+```
+Cek di client manapun(misal: Earendil)
+```
+curl http://www.K20.com/static/
+```
+Dari terminal Earendil
+```
+curl http://www.K20.com/app/about
+```
+Dari terminal Earendil
+```
+curl http://www.K20.com/app/
+```
 
