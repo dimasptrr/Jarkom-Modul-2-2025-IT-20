@@ -228,8 +228,9 @@ named-checkzone K20.com /etc/bind/zones/db.K20.com
 ln -s /etc/init.d/named /etc/init.d/bind9
 
 service bind9 restart
-
-#di terminal Valmar
+```
+Di terminal Valmar
+```
 apt update
 apt install bind9 -y
 
