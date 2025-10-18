@@ -16,7 +16,148 @@ Earendil dan Elwing, Timur untuk Círdan, Elrond, Maglor, serta pelabuhan DMZ ba
 Sirion, Tirion, Valmar, Lindon, Vingilot. Tetapkan alamat dan default gateway tiap 
 tokoh sesuai glosarium yang sudah diberikan.
 
-<img width="757" height="587" alt="image" src="https://github.com/user-attachments/assets/af07c410-70e7-44c7-9b5d-f097e4e33279" />
+Eonwe
+```
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+    address 192.221.1.1
+    netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+    address 192.221.2.1
+    netmask 255.255.255.0
+
+auto eth3
+iface eth3 inet static
+    address 192.221.3.1
+    netmask 255.255.255.0
+```
+Earendil
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.1.2
+    netmask 255.255.255.0
+    gateway 192.221.1.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+Elwing
+
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.1.3
+    netmask 255.255.255.0
+    gateway 192.221.1.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+Cirdan
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.2.2
+    netmask 255.255.255.0
+    gateway 192.221.2.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+Elrond
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.2.3
+    netmask 255.255.255.0
+    gateway 192.221.2.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+Maglor
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.2.4
+    netmask 255.255.255.0
+    gateway 192.221.2.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+Sirion
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.3.2
+    netmask 255.255.255.0
+    gateway 192.221.3.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+Tirion
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.3.3
+    netmask 255.255.255.0
+    gateway 192.221.3.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+Valmar
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.3.4
+    netmask 255.255.255.0
+    gateway 192.221.3.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+Lindon
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.3.5
+    netmask 255.255.255.0
+    gateway 192.221.3.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+Vingilot
+```
+auto eth0
+iface eth0 inet static
+    address 192.221.3.6
+    netmask 255.255.255.0
+    gateway 192.221.3.1
+
+up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
+   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
+   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
+```
+
 
 
 
