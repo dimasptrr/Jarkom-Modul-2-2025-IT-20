@@ -18,9 +18,44 @@ tokoh sesuai glosarium yang sudah diberikan.
 
 <img width="757" height="587" alt="image" src="https://github.com/user-attachments/assets/af07c410-70e7-44c7-9b5d-f097e4e33279" />
 
+#### 1. Konfigurasi Router (Eonwe)
+Buka terminal Eonwe lalu edit file `/etc/network/interfaces`:
+```bash
+nano /etc/network/interfaces
 
+# Interface ke Internet (WAN)
+auto eth0
+iface eth0 inet dhcp
 
+# Jalur Barat
+auto eth1
+iface eth1 inet static
+    address 192.221.1.1
+    netmask 255.255.255.0
 
+# Jalur Timur
+auto eth2
+iface eth2 inet static
+    address 192.221.2.1
+    netmask 255.255.255.0
+
+# Jalur DMZ
+auto eth3
+iface eth3 inet static
+    address 192.221.3.1
+    netmask 255.255.255.0
+```
+Aktifkan NAT agar semua jaringan internal dapat mengakses internet
+
+```
+apt update && apt install -y iptables
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.221.0.0/16
+```
+
+Restart layanan jaringan
+```
+service networking restart
+```
 
 
 
