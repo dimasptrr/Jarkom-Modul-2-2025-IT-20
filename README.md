@@ -221,6 +221,7 @@ ns2     IN      A       192.221.3.4      ; ns2.K20.com menunjuk ke IP Valmar
 ```
 
 Di terminal Tirion
+```
 named-checkconf
 named-checkzone K20.com /etc/bind/zones/db.K20.com
 
@@ -263,14 +264,14 @@ zone "K20.com" {
     masters { 192.221.3.3; };    // Tentukan IP Master (Tirion)
 };
 ```
-```
 Di terminal Valmar
 ```
 named-checkconf
 ln -s /etc/init.d/named /etc/init.d/bind9
 service bind9 restart
-
-#menambahkan di /etc/network/interfaces di semua node
+```
+Menambahkan di /etc/network/interfaces di semua node
+```
 up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
        echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
        echo "nameserver 192.221.122.1" >> /etc/resolv.conf
