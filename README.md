@@ -19,7 +19,7 @@ tokoh sesuai glosarium yang sudah diberikan.
 <img width="757" height="587" alt="image" src="https://github.com/user-attachments/assets/af07c410-70e7-44c7-9b5d-f097e4e33279" />
 
 #### 1. Konfigurasi Router (Eonwe)
-Buka terminal Eonwe lalu edit file `/etc/network/interfaces`:
+
 ```bash
 nano /etc/network/interfaces
 
