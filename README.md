@@ -43,10 +43,6 @@ iface eth0 inet static
     address 192.221.1.2
     netmask 255.255.255.0
     gateway 192.221.1.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
 Elwing
 
@@ -56,10 +52,6 @@ iface eth0 inet static
     address 192.221.1.3
     netmask 255.255.255.0
     gateway 192.221.1.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
 Cirdan
 ```
@@ -68,10 +60,6 @@ iface eth0 inet static
     address 192.221.2.2
     netmask 255.255.255.0
     gateway 192.221.2.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
 Elrond
 ```
@@ -80,10 +68,6 @@ iface eth0 inet static
     address 192.221.2.3
     netmask 255.255.255.0
     gateway 192.221.2.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
 Maglor
 ```
@@ -92,10 +76,6 @@ iface eth0 inet static
     address 192.221.2.4
     netmask 255.255.255.0
     gateway 192.221.2.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
 Sirion
 ```
@@ -104,10 +84,6 @@ iface eth0 inet static
     address 192.221.3.2
     netmask 255.255.255.0
     gateway 192.221.3.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
 Tirion
 ```
@@ -116,10 +92,6 @@ iface eth0 inet static
     address 192.221.3.3
     netmask 255.255.255.0
     gateway 192.221.3.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
 Valmar
 ```
@@ -128,10 +100,6 @@ iface eth0 inet static
     address 192.221.3.4
     netmask 255.255.255.0
     gateway 192.221.3.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
 Lindon
 ```
@@ -140,10 +108,6 @@ iface eth0 inet static
     address 192.221.3.5
     netmask 255.255.255.0
     gateway 192.221.3.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
 Vingilot
 ```
@@ -152,14 +116,7 @@ iface eth0 inet static
     address 192.221.3.6
     netmask 255.255.255.0
     gateway 192.221.3.1
-
-up echo "nameserver 192.221.3.3" > /etc/resolv.conf && \
-   echo "nameserver 192.221.3.4" >> /etc/resolv.conf && \
-   echo "nameserver 192.221.122.1" >> /etc/resolv.conf
 ```
-
-
-
 
 
 
