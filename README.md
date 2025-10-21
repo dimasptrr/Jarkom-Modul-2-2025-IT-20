@@ -281,6 +281,8 @@ Untuk mengecek
 ```
 ping K20.com
 ```
+output ketika berhasil
+![](./assets/no4.jpg)
 
 
 
@@ -348,7 +350,9 @@ dig sirion.K20.com
 ping -c 3 vingilot.K20.com
 ping -c 3 elwing.K20.com
 ```
-
+output ketika berhasil 
+![](./assets/no5.jpg)
+![](./assets/no5.1.jpg)
 ## Soal 6
 Lonceng Valmar berdentang mengikuti irama Tirion. Pastikan zone transfer berjalan, 
 Pastikan Valmar (ns2) telah menerima salinan zona terbaru dari Tirion (ns1). Nilai 
@@ -402,6 +406,9 @@ dig SOA K20.com @192.221.3.4
 dig tes-transfer.K20.com @192.221.3.4
 ```
     -> Hasilnya harus menunjukkan A record dengan IP 1.2.3.4.
+    
+output ketika berhasil
+![](./assets/no6.jpg)
 
 
 ## Soal 7
@@ -458,6 +465,8 @@ dig www.K20.com
 dig static.K20.com
 dig app.K20.com
 ```
+output ketika berhasil
+![](./assets/no7.jpg)
 
 
 
@@ -554,6 +563,8 @@ dig -x 192.221.3.5
 #verifikasi lookup reverse untu vingilot
 dig -x 192.221.3.6
 ```
+output ketika berhasil
+![](./assets/no8.jpg)
 
 
 ## Soal 9
@@ -641,7 +652,8 @@ curl http://static.K20.com/annals/
 ```
 -  outputnya harusnya Index of /annals/
 
-
+output ketika berhasil
+![](./assets/no9.jpg)
 
 
 
@@ -739,6 +751,7 @@ Outputnya harusnya <html>
 curl http://app.K20.com/about
 ```
 - Outputnya harusnya about.php
+![](./assets/no10.jpg)
 
 
 
@@ -824,4 +837,6 @@ Dari terminal Earendil
 ```
 curl http://www.K20.com/app/
 ```
+output ketika berhasil
+![](./assets/no11.jpg)
 
